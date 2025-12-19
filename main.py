@@ -24,15 +24,16 @@ def load_page():
     if uploaded_files:
         for pdf in uploaded_files:
             text = extract_text_from_pdf(pdf)
-            st.subheader(f"Extracted text from {pdf.name}")
-            st.text_area("Preview",text,height=200)
+            # st.subheader(f"Extracted text from {pdf.name}")
+            # st.text_area("Preview",text,height=200)
             # chunk = chunker.chunk_text(text)
             # st.write("Chunks Length : ",len(chunk))
             # st.text_area("Chunks : ", chunk[0], height=200)
             # embedding = gemini_embed.embed_chunks(chunk[0])
             # st.write("Embedding Length : ",len(embedding))
             # st.text_area("Embedding : ", embedding[0], height=200)
-            ingest(text)
+            with st.spinner("Processing pdf..."):
+                ingest(text)
 
         st.write("Ask questions")
         question = st.text_input(label="Enter Question", max_chars=200, on_change=None, placeholder="My doubt is", disabled=False, label_visibility="visible")
