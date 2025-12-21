@@ -10,7 +10,7 @@ index = get_index()
 gemini_client = genai.Client()
 
 #retrieve_relevant_chunks
-def semantic_search(query: str, top_k: int = 5):
+def semantic_search(query: str, namespace, top_k: int = 5):
     """
     Step 1–4:
     - Embed user query
@@ -25,8 +25,9 @@ def semantic_search(query: str, top_k: int = 5):
     results = index.query(
         vector=query_embedding,
         top_k=top_k,
-        include_metadata=True
-    )#results = dict with 3 key one of which is matches (see docs)
+        include_metadata=True,
+        namespace=namespace
+    )#results = dictionary with 3 key one of the key is matches (see document)
 
     # 3. Extract matched text chunks
     retrieved_chunks = [
@@ -66,13 +67,13 @@ def generate_answer(query: str, context_chunks: list[str]):
     return response.text
 
 
-def answer_question(query: str):
+def answer_question(query: str,namespace):
     """
     Full retrieval pipeline
     """
 
     # Retrieve relevant chunks
-    chunks = semantic_search(query)
+    chunks = semantic_search(query,namespace)
 
     if not chunks:
         return "No relevant information found."
